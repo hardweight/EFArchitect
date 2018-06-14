@@ -33,7 +33,7 @@ namespace Web.Services
             return null;
         }
 
-        public bool CreateUser(CreateUserModel model)
+        public Tuple<bool, string> CreateUser(CreateUserModel model)
         {
             var user = new User
             {
@@ -41,15 +41,18 @@ namespace Web.Services
                 UserName = model.UserName
             };
             _userRepository.Insert(user);
-            return _unitOfWork.SaveChanges() > 0;
+            _unitOfWork.SaveChanges();
+            return new Tuple<bool, string>(true, "保存成功");
         }
 
-        public void RemoveUser(string userId)
+        public Tuple<bool, string> RemoveUser(string userId)
         {
             if (_userRepository.Count(o => o.Id == userId) > 0)
             {
                 _userRepository.Delete(userId);
+                _unitOfWork.SaveChanges();
             }
+            return new Tuple<bool, string>(true, "保存成功");
         }
 
         public Tuple<bool, string> ChangeUserInfo(ChangeUserInfoModel model)
