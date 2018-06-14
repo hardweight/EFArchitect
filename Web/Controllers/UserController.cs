@@ -29,7 +29,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser(CreateUserModel model)
+        public IActionResult CreateUser([FromBody]CreateUserModel model)
         {
             var result = _userService.CreateUser(model);
             if (result)
@@ -38,7 +38,7 @@ namespace Web.Controllers
                 return Ok(new { Result = false, Msg = "保存失败" });
         } 
 
-        public IActionResult ChangeUserInfo(ChangeUserInfoModel model)
+        public IActionResult ChangeUserInfo([FromBody]ChangeUserInfoModel model)
         {
             var result = _userService.ChangeUserInfo(model);
             if (result.Item1)
