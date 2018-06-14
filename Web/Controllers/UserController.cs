@@ -21,10 +21,10 @@ namespace Web.Controllers
         {
             return View();
         }
-
-        public IActionResult GetUser(string id)
+        [HttpGet]
+        public IActionResult GetUserInfo(string userId)
         {
-            var model = _userService.GetUserDetail(id);
+            var model = _userService.GetUserDetail(userId);
             return Ok(model);
         }
 
@@ -32,23 +32,34 @@ namespace Web.Controllers
         public IActionResult CreateUser([FromBody]CreateUserModel model)
         {
             var result = _userService.CreateUser(model);
-            if (result)
-                return Ok(new { Result = true });
-            else
-                return Ok(new { Result = false, Msg = "保存失败" });
-        } 
-
+            return Ok(new { Result = result.Item1, Msg = result.Item2 });
+        }
+        [HttpGet]
         public IActionResult ChangeUserInfo([FromBody]ChangeUserInfoModel model)
         {
             var result = _userService.ChangeUserInfo(model);
-            if (result.Item1)
+            return Ok(new { Result = result.Item1, Msg = result.Item2 });
+        }
+        [HttpGet]
+        public IActionResult GetUserList(int pageIndex=1,int pageSize = 20)
+        {
+            var model = _userService.GetUserList(pageIndex, pageSize);
+            return Ok(model);
+        }
+        [HttpGet]
+        public IActionResult Search(string keyword, int pageIndex = 1, int pageSize = 20)
+        {
+            UserListModel model;
+            if (string.IsNullOrEmpty(keyword))
             {
-                return Ok(new { Result = true });
+                model = _userService.GetUserList(pageIndex, pageSize);
             }
             else
             {
-                return Ok(new { Result = false, Msg = result.Item2 });
+                model = _userService.SearchByUserName(keyword,pageIndex, pageSize);
             }
+            return Ok(model);
         }
+
     }
 }
