@@ -9,8 +9,6 @@ namespace Web.Models.Users
     public class CreateUserModel
     {
         [Required]
-        public string Id { get; set; }
-        [Required]
         public string UserName { get; set; }
 
     }

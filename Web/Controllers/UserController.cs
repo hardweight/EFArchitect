@@ -31,7 +31,8 @@ namespace Web.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody]CreateUserModel model)
         {
-            var result = _userService.CreateUser(model);
+            var userId = ObjectId.GenerateNewStringId();
+            var result = _userService.CreateUser(userId,model);
             return Ok(new { Result = result.Item1, Msg = result.Item2 });
         }
         [HttpGet]

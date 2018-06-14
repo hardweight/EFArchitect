@@ -33,11 +33,11 @@ namespace Web.Services
             return null;
         }
 
-        public Tuple<bool, string> CreateUser(CreateUserModel model)
+        public Tuple<bool, string> CreateUser(string userId,CreateUserModel model)
         {
             var user = new User
             {
-                Id = model.Id,
+                Id = userId,
                 UserName = model.UserName
             };
             _userRepository.Insert(user);
