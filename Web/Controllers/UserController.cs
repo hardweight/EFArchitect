@@ -33,7 +33,7 @@ namespace Web.Controllers
         {
             var userId = ObjectId.GenerateNewStringId();
             var result = _userService.CreateUser(userId,model);
-            return Ok(new { Result = result.Item1, Msg = result.Item2 });
+            return Ok(new { Result = result.IsSucess, Msg = result.Message });
         }
         [HttpGet]
         public IActionResult ChangeUserInfo([FromBody]ChangeUserInfoModel model)
