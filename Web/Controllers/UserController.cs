@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Utils;
+using Web.ActionFilters;
 using Web.Models.Users;
 using Web.Services;
 
@@ -27,7 +28,7 @@ namespace Web.Controllers
             var model = _userService.GetUserDetail(userId);
             return Ok(model);
         }
-
+        [ValidateModelState]
         [HttpPost]
         public IActionResult CreateUser([FromBody]CreateUserModel model)
         {
@@ -35,11 +36,12 @@ namespace Web.Controllers
             var result = _userService.CreateUser(userId,model);
             return Ok(new { Result = result.IsSucess, Msg = result.Message });
         }
-        [HttpGet]
+        [ValidateModelState]
+        [HttpPost]
         public IActionResult ChangeUserInfo([FromBody]ChangeUserInfoModel model)
         {
             var result = _userService.ChangeUserInfo(model);
-            return Ok(new { Result = result.Item1, Msg = result.Item2 });
+            return Ok(new { Result = result.IsSucess, Msg = result.Message });
         }
         [HttpGet]
         public IActionResult GetUserList(int pageIndex=1,int pageSize = 20)
